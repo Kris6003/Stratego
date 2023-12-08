@@ -176,7 +176,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
             //GameBoard tablero = new GameBoard();
             //tablero.setVisible(true);
-            this.setVisible(false);
+            new GameBoard().setVisible(true);
         }
     }//GEN-LAST:event_BotonStrategoMouseClicked
 
