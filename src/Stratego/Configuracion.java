@@ -119,7 +119,7 @@ public class Configuracion extends javax.swing.JFrame {
 
     private void BotonModoClasicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonModoClasicoMouseClicked
         JOptionPane.showMessageDialog( null,"¡El Modo de Juego ha sido actualizado exitosamente! Modo de Juego Actual: Clásico", "Modo de Juego Actualizado", JOptionPane.INFORMATION_MESSAGE);
-        this.modoTutorial=true;
+        this.modoTutorial=false;
     }//GEN-LAST:event_BotonModoClasicoMouseClicked
 
     /**

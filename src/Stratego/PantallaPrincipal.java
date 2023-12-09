@@ -120,6 +120,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             listaUsuarios.add(new UsuariosInfo("kris3", "kris3"));
             listaUsuarios.add(new UsuariosInfo("karla05", "12345"));
             listaUsuarios.add(new UsuariosInfo("lopez", "hola5"));
+            listaUsuarios.add(new UsuariosInfo("a", "12345"));
         }
     }
     

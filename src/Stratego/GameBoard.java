@@ -30,8 +30,14 @@ public class GameBoard extends JFrame {
     private PrintStream printStream;
     private Boolean gameHasInit = false;
     private Boolean gameEndedOnNoPieces = false;
+    private Boolean isTutorial = false;
     JPanel eliminatedHeroesPanel = new JPanel(new GridLayout(10, 10));
     JPanel eliminatedVillainsPanel = new JPanel(new GridLayout(10, 10));
+
+    public void close() {
+        InitCharacters.getInstance().setInitCharactersNull();
+        dispose(); // Dispose of the JFrame
+    }
 
     List<Character> eliminatedHeroes = new ArrayList<>();
     List<Character> eliminatedVillains = new ArrayList<>();
@@ -56,8 +62,8 @@ public class GameBoard extends JFrame {
         }
     }
 
-    public GameBoard() {
-        // Set up the main frame
+    public GameBoard(Boolean isTutorial) {
+        this.isTutorial = isTutorial;
         Object[] options = { "YES", "NO" };
         int n = JOptionPane.showOptionDialog(this,
                 "¿Quieres jugar con heroes?",
@@ -105,6 +111,9 @@ public class GameBoard extends JFrame {
         // Add buttons to the frame
         // add(confirmEndTurnHideCards, BorderLayout.SOUTH);
         add(resignGame, BorderLayout.NORTH);
+        if (isTutorial) {
+
+        }
         updatePanels();
 
         JTextArea textArea = new JTextArea(24, 80);
@@ -272,8 +281,17 @@ public class GameBoard extends JFrame {
                 if (targetCharacter != null) {
                     if (selectedCharacter.isHero() != targetCharacter.isHero()) {
                         Object[] options = { "Confirmar", "Cancelar" };
+                        ImageIcon selectedImage = selectedCharacter.getImage();
+                        ImageIcon targetImage = targetCharacter.getImage();
+                        Object[] message = {
+                            "¿Estás seguro de que quieres luchar?",
+                            "Personaje seleccionado:",
+                            new JLabel(selectedImage),
+                            "Personaje objetivo:",
+                            new JLabel(targetImage)
+                        };
                         int n = JOptionPane.showOptionDialog(this,
-                                "¿Estás seguro de que quieres luchar?",
+                                message,
                                 "Confirmar lucha",
                                 JOptionPane.YES_NO_OPTION,
                                 JOptionPane.QUESTION_MESSAGE,
@@ -284,16 +302,12 @@ public class GameBoard extends JFrame {
                         if (n == JOptionPane.YES_OPTION) {
 
                             if (targetCharacter.getName().equals("Tierra")) {
-                                // endGame();
-
                                 JOptionPane.showMessageDialog(this, "Villains win!");
-
-                                dispose();
+                                close();
                             } else if (targetCharacter.getName().equals("Planet Tierra")) {
                                 // endGame();
                                 JOptionPane.showMessageDialog(this, "Heroes win! +3 points");
-
-                                dispose();
+                                close();
                             } else if ((selectedCharacter.getPowerRating() != 3 &&
                                     (targetCharacter.getName().equals("Nova Blast")
                                             || targetCharacter.getName().equals("Pumpkin Bomb")))) {
@@ -312,7 +326,10 @@ public class GameBoard extends JFrame {
                                     }
 
                                     selectedCharacter = null; // Permitir la selección de otra pieza
-                                    changeCardBackgrounds();
+                                    if (!isTutorial) {
+                                        changeCardBackgrounds();
+
+                                    }
                                     updatePanels();
                                     revalidate();
                                     repaint();
@@ -366,7 +383,10 @@ public class GameBoard extends JFrame {
                                             }
 
                                             selectedCharacter = null; // Allow another piece to be selected
-                                            changeCardBackgrounds();
+                                            if (!isTutorial) {
+                                                changeCardBackgrounds();
+
+                                            }
                                             updatePanels();
                                             revalidate();
                                             repaint();
@@ -381,8 +401,11 @@ public class GameBoard extends JFrame {
                                             // The selected character has a lower power rating, so it is eliminated
                                             eliminateCharacter(selectedCharacter, true, false);
                                             selectedCharacter = null; // Allow another piece to be selected
-                                            changeCardBackgrounds();
                                             revalidate();
+                                             if (!isTutorial) {
+                                                changeCardBackgrounds();
+
+                                            }
                                             repaint();
                                             isHeroTurn = !isHeroTurn;
                                         }
@@ -409,7 +432,10 @@ public class GameBoard extends JFrame {
                                 // Si una pieza menor ataca a una mayor, se elimina sola
                                 eliminateCharacter(selectedCharacter, true, false);
                                 selectedCharacter = null; // Permitir la selección de otra pieza
-                                changeCardBackgrounds();
+                                if (!isTutorial) {
+                                    changeCardBackgrounds();
+
+                                }
                                 updatePanels();
                                 revalidate();
                                 repaint();
@@ -428,7 +454,10 @@ public class GameBoard extends JFrame {
                                 }
 
                                 selectedCharacter = null; // Permitir la selección de otra pieza
-                                changeCardBackgrounds();
+                                if (!isTutorial) {
+                                    changeCardBackgrounds();
+
+                                }
                                 updatePanels();
                                 revalidate();
                                 repaint();
@@ -445,7 +474,7 @@ public class GameBoard extends JFrame {
                             selectedCharacter = null;
                         }
                     }
-                    // changeCardBackgrounds();
+
                 }
 
             }
@@ -454,13 +483,13 @@ public class GameBoard extends JFrame {
 
     private void endGame() {
         // Handle the game ending logic here
-       // System.out.println(isHeroTurn);
+        // System.out.println(isHeroTurn);
         if (!isHeroTurn || (isHeroTurn && gameEndedOnNoPieces)) {
             JOptionPane.showMessageDialog(this, "Heroes win! +3 points");
         } else {
             JOptionPane.showMessageDialog(this, "Villains win!");
         }
-        dispose();
+        close();
     }
 
     private boolean isPathClear(int startX, int startY, int endX, int endY) {
@@ -519,8 +548,10 @@ public class GameBoard extends JFrame {
         buttons[oldX][oldY].setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
         selectedCharacter = null;
-        changeCardBackgrounds();
         revalidate();
+        if (!isTutorial) {
+            changeCardBackgrounds();
+        }
         repaint();
     }
 
@@ -558,6 +589,9 @@ public class GameBoard extends JFrame {
                 villainsScore += 5;
             }
             // GameBoard();
+            if (isTutorial) {
+
+            }
             updatePanels();
             revalidate();
             repaint();
@@ -600,6 +634,6 @@ public class GameBoard extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GameBoard());
+        SwingUtilities.invokeLater(() -> new GameBoard(false));
     }
 }

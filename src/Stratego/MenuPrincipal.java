@@ -4,11 +4,7 @@ package Stratego;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -164,31 +160,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
         universoMarvel.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_BotonUniversoMarvelMouseClicked
-
-    private void BotonStrategoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonStrategoMouseClicked
-        // Verificar si hay al menos dos usuarios para poder iniciar el juego
-        if (listaUsuarios.size() < 2) {
-            // Mostrar un mensaje informativo si no hay suficientes usuarios
-            JOptionPane.showMessageDialog(null, "Se requieren al menos dos usuarios para iniciar el juego. Por favor, cree más usuarios antes de comenzar.", "Error", JOptionPane.WARNING_MESSAGE);
-        } else {
-            // Crear una instancia de la clase Stratego con los datos necesarios
-            //TableroStratego tableroStratego = new TableroStratego(this.indexUser, this.listaUsuarios, this.listaLogs, nombreUsuario, this.listaUsuariosEliminados, modoTutorial);
-
-            //GameBoard tablero = new GameBoard();
-            //tablero.setVisible(true);
-            new GameBoard().setVisible(true);
+    private GameBoard gameBoard;
+ private void BotonStrategoMouseClicked(java.awt.event.MouseEvent evt) {
+    if (listaUsuarios.size() < 2) {
+        JOptionPane.showMessageDialog(null, "Se requieren al menos dos usuarios para iniciar el juego. Por favor, cree más usuarios antes de comenzar.", "Error", JOptionPane.WARNING_MESSAGE);
+    } else {
+        if (gameBoard != null) {
+            gameBoard.close(); // Close the current game board
         }
-    }//GEN-LAST:event_BotonStrategoMouseClicked
+        SwingUtilities.invokeLater(() -> {
+            gameBoard = new GameBoard(this.modoTutorial);
+            gameBoard.setVisible(true);
+        });
+    }
+}
 
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

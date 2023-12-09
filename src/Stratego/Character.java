@@ -1,9 +1,4 @@
 package Stratego;
-
-/**
- *
- * @author marco
- */
 import javax.swing.ImageIcon;
 
 public class Character {
