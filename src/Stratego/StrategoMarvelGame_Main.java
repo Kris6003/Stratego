@@ -11,7 +11,7 @@ public class StrategoMarvelGame_Main {
         
         /*
         Main del Proyecto.
-        Es decir, es el punto de partida para la ejecución del programa.
+        Es decir, es el punto de partida para la ejecución del programa. kalskdasd
         */
        
         PantallaPrincipal pantallaPrincipalMain = new PantallaPrincipal(null,null,null, true);
